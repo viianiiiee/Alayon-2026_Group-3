@@ -14,16 +14,6 @@ function CatIcon({ category, size = 18 }) {
   return <Icon size={size} />
 }
 
-function MedalEmblem({ house, place }) {
-  const medal = ['#F59E0B', '#CBD5E1', '#B45309'][place - 1]
-  return (
-    <div className={`event-medal-emblem place-${place}`} style={{ '--house': house.color, '--medal': medal }}>
-      <span className="event-medal-ribbon" />
-      <img src={house.logo} alt={`${house.name}, place ${place}`} />
-      <span className="event-medal-disc">{place}</span>
-    </div>
-  )
-}
 const POINTS_FOR_PLACE = { 1: 15, 2: 10, 3: 5 }
 
 export default function EventsScoring() {
@@ -122,7 +112,7 @@ export default function EventsScoring() {
                 {hasScores && (
                   <div className="pt-2">
                     {/* Podium: 2nd | 1st | 3rd */}
-                    <div className="flex items-end justify-center gap-1.5 h-28">
+                    <div className="flex items-end justify-center gap-1.5 h-40">
                       {[1, 0, 2].map((si, pi) => {
                         if (!scoredSorted[si]) return null
                         const [hId, score] = scoredSorted[si]
@@ -134,7 +124,10 @@ export default function EventsScoring() {
                         return (
                           <div key={hId} className="flex flex-col items-center flex-1">
                             {pi === 1 && <Crown size={13} className="text-amber-400 mb-0.5 animate-crown" />}
-                            <MedalEmblem house={h} place={si + 1} />
+                            <div className={`${pi === 1 ? 'w-14 h-14' : 'w-12 h-12'} rounded-full overflow-hidden mb-2 flex-shrink-0`}
+                              style={{ background: h.bgGradient, boxShadow: `0 0 0 3px ${lc}, 0 8px 20px ${h.glow}` }}>
+                              <img src={h.logo} className="w-full h-full object-cover" alt={h.name} />
+                            </div>
                             <div className="w-full rounded-t-xl flex flex-col items-center pt-1.5 pb-1 gap-0.5"
                               style={{ background: `${h.color}18`, border: `1px solid ${h.color}25`, borderBottom: 'none', height: podH }}>
                               <span className="text-[10px] font-black leading-none" style={{ color: lc }}>{lbl}</span>

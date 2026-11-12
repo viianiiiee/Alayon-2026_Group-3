@@ -20,9 +20,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'icons/*.png'],
       manifest: {
-        name: 'Admin Dashboard System',
-        short_name: 'AdminDash',
-        description: 'House Competition & School Event Admin Dashboard',
+        name: 'HouseVerse',
+        short_name: 'HouseVerse',
+        description: 'House competition and school event management system',
         theme_color: '#1a1f36',
         background_color: '#f8fafc',
         display: 'standalone',

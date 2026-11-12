@@ -1,31 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
-import { Trophy, Users, Zap, CalendarCheck, TrendingUp, Activity, Crown, Star, Flame, BarChart2, Dumbbell, Palette, Wifi, Flag, Target, Award, CheckCircle2, AlertTriangle, XOctagon, Home } from 'lucide-react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { Trophy, Users, Zap, CalendarCheck, Activity, Crown, Star, Flame, BarChart2, Dumbbell, Palette, Wifi, Flag, Target, Award, CheckCircle2, AlertTriangle, XOctagon, Home } from 'lucide-react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { trendData, events, dashStats } from '../data/mock.js'
 import { useApp } from '../context/AppContext.jsx'
 import AnimatedCounter from '../components/AnimatedCounter.jsx'
 
 const RANK_COLORS = ['#F59E0B', '#94A3B8', '#B45309']
 const CAT_ICONS = { Sports: Dumbbell, Arts: Palette, Online: Wifi, Opening: Flag, 'Larong Pinoy': Target }
-
-const LogoDot = ({ cx, cy, houseId, houses }) => {
-  if (!cx || !cy) return null
-  const h = houses?.find(h => h.id === houseId)
-  if (!h) return null
-  const r = 11
-  const id = `ld-${houseId}-${Math.round(cx)}`
-  return (
-    <g>
-      <defs>
-        <clipPath id={id}><circle cx={cx} cy={cy} r={r} /></clipPath>
-      </defs>
-      <circle cx={cx} cy={cy} r={r + 3} fill={h.color} opacity={0.15} />
-      <image href={h.logo} x={cx - r} y={cy - r} width={r * 2} height={r * 2}
-        clipPath={`url(#${id})`} preserveAspectRatio="xMidYMid slice" />
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke={h.color} strokeWidth={2} />
-    </g>
-  )
-}
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
@@ -64,9 +45,8 @@ function HouseChampionCard({ house, rank }) {
   return (
     <div className="relative" style={{ paddingTop: '56px' }}>
       {/* Logo pops above the card — animates in on load with stagger */}
-      <div className="absolute inset-x-0 flex justify-center z-10" style={{ top: 0, transform: 'translateY(-50%)' }}>
+      <div className="absolute inset-x-0 flex justify-center z-10" style={{ top: '56px', transform: 'translateY(-50%)' }}>
         <div className="animate-pop-logo relative" style={{ animationDelay: `${rank * 160}ms` }}>
-          <div className={`house-medal-ribbon medal-rank-${rank + 1}`} aria-hidden="true" />
           <div className={`w-28 h-28 rounded-full overflow-hidden relative house-emblem ${isFirst ? 'animate-float' : ''}`}
             style={{
               background: house.bgGradient,
@@ -131,31 +111,31 @@ function RankingBars() {
   ]
 
   return (
-    <div className="glass-card p-5">
-      <div className="flex items-center gap-2 mb-5">
-        <BarChart2 size={16} className="text-purple-400" />
-        <h3 className="font-display font-semibold text-base" style={{ color: 'var(--text-1)' }}>Points Comparison</h3>
-        <span className="text-xs font-mono ml-auto" style={{ color: 'var(--text-3)' }}>Season Total</span>
+    <div className="glass-card p-6 lg:p-7">
+      <div className="flex items-center gap-3 mb-7">
+        <BarChart2 size={20} className="text-purple-400" />
+        <h3 className="font-display font-semibold text-xl" style={{ color: 'var(--text-1)' }}>Points Comparison</h3>
+        <span className="text-sm font-mono ml-auto" style={{ color: 'var(--text-3)' }}>Season Total</span>
       </div>
-      <div className="space-y-5">
+      <div className="space-y-7">
         {sortedHouses.map((h, i) => {
           const pct = (h.points / max) * 100
           const cfg = RANK_CFG[i]
           return (
             <div key={h.id}>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center font-black text-[11px] flex-shrink-0"
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm flex-shrink-0"
                   style={{ background: cfg.bg, color: cfg.fg, border: `1px solid ${cfg.fg}35` }}>
                   {i + 1}
                 </div>
-                <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0" style={{ background: h.bgGradient, boxShadow: `0 2px 8px ${h.glow}` }}>
+                <div className="w-11 h-11 rounded-full overflow-hidden flex-shrink-0" style={{ background: h.bgGradient, boxShadow: `0 2px 12px ${h.glow}` }}>
                   <img src={h.logo} className="w-full h-full object-cover" alt="" />
                 </div>
-                <span className="text-sm font-semibold flex-1 truncate" style={{ color: 'var(--text-1)' }}>{h.name}</span>
-                <span className="text-xs font-semibold tabular-nums w-8 text-right" style={{ color: cfg.fg }}>{pct.toFixed(0)}%</span>
-                <span className="text-sm font-bold tabular-nums w-16 text-right" style={{ color: h.color }}>{h.points.toLocaleString()}</span>
+                <span className="text-base font-semibold flex-1 truncate" style={{ color: 'var(--text-1)' }}>{h.name}</span>
+                <span className="text-base font-semibold tabular-nums w-12 text-right" style={{ color: cfg.fg }}>{pct.toFixed(0)}%</span>
+                <span className="text-lg font-bold tabular-nums w-20 text-right" style={{ color: h.color }}>{h.points.toLocaleString()}</span>
               </div>
-              <div className="h-3 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+              <div className="h-4 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
                 <div className="h-full rounded-full"
                   style={{
                     width: ready ? `${pct}%` : '0%',
@@ -182,31 +162,31 @@ export default function MasterDashboard() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Hero header */}
-      <div className="relative overflow-hidden rounded-2xl px-6 py-6"
+      <div className="houseverse-hero relative overflow-hidden rounded-2xl px-7 py-8 lg:px-9 lg:py-9"
         style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(217,119,6,0.08) 50%, rgba(220,38,38,0.1) 100%)', border: '1px solid var(--border)' }}>
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
         <div className="relative flex flex-wrap gap-4 items-center justify-between">
-          <div>
+          <div className="relative z-[2]">
             <div className="flex items-center gap-2 mb-1.5">
               <Flame size={16} className="text-amber-400" />
               <span className="text-xs font-bold uppercase tracking-widest text-amber-400">{dashStats.academicYear} · {dashStats.semester}</span>
             </div>
-            <h2 className="font-display text-3xl font-bold leading-tight" style={{ color: 'var(--text-1)' }}>CISC Arena</h2>
-            <p className="text-base mt-1" style={{ color: 'var(--text-2)' }}>House Competition · Season 2025–2026</p>
+            <h2 className="houseverse-title font-display text-4xl lg:text-5xl font-bold leading-tight" style={{ color: 'var(--text-1)' }}>HouseVerse</h2>
+            <p className="text-lg mt-2" style={{ color: 'var(--text-2)' }}>House Competition · Season 2025–2026</p>
           </div>
-          <div className="flex gap-3 flex-wrap">
+          <div className="hero-stats relative z-[2] flex gap-3 flex-wrap">
             {[
               { label: 'Students',  value: dashStats.totalStudents,    icon: Users,        color: '#7C3AED' },
               { label: 'Events',    value: dashStats.totalEvents,      icon: Trophy,       color: '#D97706' },
               { label: 'Pts Total', value: totalPts,                   icon: Star,         color: '#F59E0B' },
               { label: 'Ongoing',   value: dashStats.ongoingEvents,    icon: Zap,          color: '#10B981' },
             ].map(({ label, value, icon: Icon, color }) => (
-              <div key={label} className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <Icon size={16} style={{ color }} />
+              <div key={label} className="hero-stat flex items-center gap-3 px-4 py-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <Icon size={19} style={{ color }} />
                 <div>
-                  <p className="text-xs" style={{ color: 'var(--text-3)' }}>{label}</p>
-                  <p className="text-base font-bold text-white"><AnimatedCounter value={value} /></p>
+                  <p className="text-sm" style={{ color: 'var(--text-3)' }}>{label}</p>
+                  <p className="text-xl font-bold text-white"><AnimatedCounter value={value} /></p>
                 </div>
               </div>
             ))}
@@ -231,25 +211,31 @@ export default function MasterDashboard() {
 
       {/* Trend + Recent */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 glass-card p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={16} className="text-purple-400" />
-            <h3 className="font-display font-semibold text-base" style={{ color: 'var(--text-1)' }}>Points Trend</h3>
+        <div className="lg:col-span-3 glass-card p-6 lg:p-7">
+          <div className="flex items-center gap-3 mb-5">
+            <BarChart2 size={20} className="text-purple-400" />
+            <h3 className="font-display font-semibold text-xl" style={{ color: 'var(--text-1)' }}>Monthly Points</h3>
             <span className="text-sm ml-auto" style={{ color: 'var(--text-3)' }}>Aug – Nov 2026</span>
           </div>
-          <ResponsiveContainer width="100%" height={210}>
-            <LineChart data={trendData} margin={{ top: 0, right: 4, left: -20, bottom: 0 }}>
+          <div className="flex flex-wrap gap-6 mb-5">
+            {sortedHouses.map(h => (
+              <div key={h.id} className="flex items-center gap-2.5 text-base font-medium" style={{ color: 'var(--text-2)' }}>
+                <img src={h.logo} alt="" className="w-9 h-9 rounded-full object-cover" style={{ boxShadow: `0 0 0 2px ${h.color}80` }} />
+                <span>{h.shortName}</span>
+              </div>
+            ))}
+          </div>
+          <ResponsiveContainer width="100%" height={340}>
+            <BarChart data={trendData} margin={{ top: 12, right: 8, left: 0, bottom: 8 }} barGap={7} barCategoryGap="22%">
               <CartesianGrid stroke="rgba(255,255,255,0.05)" strokeDasharray="4 4" />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: 'var(--text-3)' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: 'var(--text-3)' }} axisLine={false} tickLine={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 15, fill: 'var(--text-2)' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 14, fill: 'var(--text-3)' }} axisLine={false} tickLine={false} width={48} />
               <Tooltip content={<CustomTooltip />} />
-              {sortedHouses.map(h => (
-                <Line key={h.id} type="monotone" dataKey={h.shortName} stroke={h.color}
-                  strokeWidth={3}
-                  dot={(p) => <LogoDot key={`${h.id}-${p.index}`} {...p} houseId={h.id} houses={sortedHouses} />}
-                  activeDot={(p) => <LogoDot {...p} houseId={h.id} houses={sortedHouses} />} />
+              {sortedHouses.map((h, index) => (
+                <Bar key={h.id} dataKey={h.shortName} fill={h.color} radius={[8, 8, 3, 3]}
+                  animationBegin={index * 140} animationDuration={1100} animationEasing="ease-out" />
               ))}
-            </LineChart>
+            </BarChart>
           </ResponsiveContainer>
         </div>
 

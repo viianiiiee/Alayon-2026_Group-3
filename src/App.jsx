@@ -13,7 +13,7 @@ import PointsLedger     from './pages/PointsLedger.jsx'
 import LostFound        from './pages/LostFound.jsx'
 
 const NAV = [
-  { to: '/',             icon: LayoutDashboard, label: 'CISC Arena',       sub: 'Overview & Standings' },
+  { to: '/',             icon: LayoutDashboard, label: 'HouseVerse',       sub: 'Overview & Standings' },
   { to: '/houses',       icon: Home,            label: 'House Management', sub: 'Members & Profiles' },
   { to: '/events',       icon: Trophy,          label: 'Events & Scoring', sub: 'Competitions' },
   { to: '/attendance',   icon: QrCode,          label: 'QR Attendance',    sub: 'Check-In System' },
@@ -30,18 +30,18 @@ function Sidebar({ open, onClose }) {
     <>
       {open && <div className="fixed inset-0 bg-black/70 z-20 lg:hidden backdrop-blur-sm" onClick={onClose} />}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-30 w-64 flex flex-col transition-transform duration-300 sidebar-panel
+        fixed lg:static inset-y-0 left-0 z-30 w-72 flex flex-col overflow-y-auto transition-transform duration-300 sidebar-panel
         ${open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Logo area */}
-        <div className="px-5 pt-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.065)' }}>
+        <div className="px-5 py-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.065)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="arena-brand-mark">
-                <Trophy size={19} className="relative z-10" />
+                <Trophy size={23} className="relative z-10" />
               </div>
               <div>
-                <p className="font-display font-bold text-sm text-white leading-tight">CISC Arena</p>
+                <p className="font-display font-bold text-lg text-white leading-tight">HouseVerse</p>
                 <p className="text-[11px] text-slate-500 leading-tight">System AY 2025–2026</p>
               </div>
             </div>
@@ -52,13 +52,13 @@ function Sidebar({ open, onClose }) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-600">Navigation</p>
+        <nav className="flex-none px-3 py-4 space-y-1">
+          <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">Navigation</p>
           {NAV.map(({ to, icon: Icon, label, sub }) => (
             <NavLink
               key={to} to={to} end={to === '/'} onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative overflow-hidden
+                `sidebar-nav-link flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden
                 ${isActive ? 'text-white' : 'text-slate-500 hover:text-slate-200'}`
               }
               style={({ isActive }) => isActive ? {
@@ -69,12 +69,12 @@ function Sidebar({ open, onClose }) {
             >
               {({ isActive }) => (
                 <>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${isActive ? 'bg-purple-500/20' : 'group-hover:bg-white/5'}`}>
-                    <Icon size={16} className={isActive ? 'text-purple-400' : 'text-slate-500 group-hover:text-slate-300'} />
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${isActive ? 'bg-purple-500/20' : 'group-hover:bg-white/5'}`}>
+                    <Icon size={18} className={isActive ? 'text-purple-400' : 'text-slate-500 group-hover:text-slate-300'} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium leading-tight truncate">{label}</p>
-                    <p className="text-[11px] text-slate-600 leading-tight truncate">{sub}</p>
+                    <p className="text-base font-semibold leading-tight truncate">{label}</p>
+                    <p className="text-xs text-slate-500 leading-tight truncate mt-0.5">{sub}</p>
                   </div>
                   <ChevronRight size={12} className={`transition-all ${isActive ? 'opacity-60 text-purple-400' : 'opacity-0 group-hover:opacity-30'}`} />
                 </>
@@ -84,19 +84,19 @@ function Sidebar({ open, onClose }) {
         </nav>
 
         {/* House quick standings */}
-        <div className="px-4 py-4" style={{ borderTop: '1px solid rgba(255,255,255,0.065)' }}>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-600 mb-2">Live Standings</p>
-          <div className="space-y-1.5">
+        <div className="px-4 pb-5 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.065)' }}>
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Live Standings</p>
+          <div className="space-y-2">
             {sortedHouses.map((h, i) => (
-              <div key={h.id} className="flex items-center gap-2 px-2.5 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <span className="text-[11px] font-bold w-4 flex-shrink-0" style={{ color: RANK_COLORS[i] }}>
+              <div key={h.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <span className="text-xs font-bold w-4 flex-shrink-0" style={{ color: RANK_COLORS[i] }}>
                   {i === 0 ? <Crown size={10} style={{ color: '#F59E0B' }} /> : `#${i + 1}`}
                 </span>
-                <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0" style={{ background: h.bgGradient }}>
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ background: h.bgGradient }}>
                   {h.logo && <img src={h.logo} className="w-full h-full object-cover" alt="" />}
                 </div>
-                <span className="text-xs text-slate-400 flex-1 truncate">{h.shortName}</span>
-                <span className="text-xs font-bold" style={{ color: h.color }}>{h.points.toLocaleString()}</span>
+                <span className="text-sm text-slate-300 flex-1 truncate">{h.shortName}</span>
+                <span className="text-sm font-bold" style={{ color: h.color }}>{h.points.toLocaleString()}</span>
               </div>
             ))}
           </div>
