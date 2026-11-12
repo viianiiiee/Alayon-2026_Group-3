@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(id, size) {
+  const c = document.getElementById(id)
+  const ctx = c.getContext('2d')
+  const r = size * 0.14
+  ctx.beginPath()
+  ctx.moveTo(r, 0)
+  ctx.lineTo(size - r, 0)
+  ctx.arcTo(size, 0, size, r, r)
+  ctx.lineTo(size, size - r)
+  ctx.arcTo(size, size, size - r, size, r)
+  ctx.lineTo(r, size)
+  ctx.arcTo(0, size, 0, size - r, r)
+  ctx.lineTo(0, r)
+  ctx.arcTo(0, 0, r, 0, r)
+  ctx.closePath()
+  const grad = ctx.createLinearGradient(0, 0, size, size)
+  grad.addColorStop(0, '#1e3a5f')
+  grad.addColorStop(1, '#2563eb')
+  ctx.fillStyle = grad
+  ctx.fill()
+  ctx.fillStyle = 'white'
+  ctx.font = `bold ${size * 0.4}px sans-serif`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('F', size / 2, size / 2 + size * 0.03)
+}
+drawIcon('c192', 192)
+drawIcon('c512', 512)
+document.querySelectorAll('canvas').forEach(c => {
+  const a = document.createElement('a')
+  a.href = c.toDataURL()
+  a.download = c.id === 'c192' ? 'icon-192.png' : 'icon-512.png'
+  a.click()
+})
+</script>
+</body>
+</html>
